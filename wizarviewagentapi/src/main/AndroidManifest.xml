@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.wizarpos.aidl.tester">
+
+    <uses-permission android:name="android.permission.CLOUDPOS_ACCESS_TMS" />
+    <uses-permission android:name="android.permission.CLOUDPOS_DOWNLOADRECEIVER" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.cloudpos.aidl.tester.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <receiver
+            android:name="com.cloudpos.aidl.tester.receiver.DowloadReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.RESULT_OF_DOWNLOAD" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

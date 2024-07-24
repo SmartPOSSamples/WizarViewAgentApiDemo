@@ -1,0 +1,2 @@
+include ':wizarviewagentapi'
+rootProject.name = "WizarViewAgentApiDemo"
