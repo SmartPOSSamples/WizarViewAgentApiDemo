@@ -36,6 +36,7 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button btn_run2 = (Button) this.findViewById(R.id.btn_run2);
         Button btn_run3 = (Button) this.findViewById(R.id.btn_run3);
         Button btn_run4 = (Button) this.findViewById(R.id.btn_run4);
         Button btn_run5 = (Button) this.findViewById(R.id.btn_run5);
@@ -43,6 +44,7 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
         log_text.setMovementMethod(ScrollingMovementMethod.getInstance());
 
         findViewById(R.id.settings).setOnClickListener(this);
+        btn_run2.setOnClickListener(this);
         btn_run3.setOnClickListener(this);
         btn_run4.setOnClickListener(this);
         btn_run5.setOnClickListener(this);
@@ -130,8 +132,17 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
     @Override
     public void onClick(View arg0) {
         int index = arg0.getId();
-        if (index == R.id.btn_run3) {
+        if (index == R.id.btn_run2) {
             try {
+                int status = wizarviewService.refreshAppList();
+                writerInSuccessLog("\t refresh AppList status: " + status + "\n");
+            } catch (RemoteException e) {
+                throw new RuntimeException(e);
+            }
+        } else if (index == R.id.btn_run3) {
+            try {
+                int status = wizarviewService.refreshAppList();
+                writerInSuccessLog("\t refresh AppList status: " + status + "\n");
                 AppInfo[] appInfos = wizarviewService.queryAppInfos(AppInfo.INSTALL_TYPE_ALL, AppInfo.STATUS_ALL, AppInfo.CONTENT_TYPE_ALL);
                 writerInSuccessLog("\t" + "query appInfos: " + JSONObject.toJSONString(appInfos) + "\n");
             } catch (RemoteException e) {
@@ -157,6 +168,8 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
     public void getAppInfosDialog(final int type) throws RemoteException {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Select an Option");
+        int status = wizarviewService.refreshAppList();
+        writerInSuccessLog("\t refresh AppList status: " + status + "\n");
         AppInfo[] appInfos = wizarviewService.queryAppInfos(AppInfo.INSTALL_TYPE_ALL, AppInfo.STATUS_ALL, AppInfo.CONTENT_TYPE_ALL);
         if (appInfos != null) {
             List<String> names = new ArrayList<>(appInfos.length);
@@ -173,11 +186,11 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
                             return;
                         }
                         if (type == R.id.btn_run4) {
-                            int code = wizarviewService.downloadAppInfoByAppID(0);
+                            int code = wizarviewService.downloadAppInfoByAppID(appInfos[0].getAppID());
                             writerInSuccessLog("\t" + "download result: " + code + "\n");
                         } else if (type == R.id.btn_run5) {
-                            String result = wizarviewService.queryAppInfoDownloadProgress(0);
-                            writerInSuccessLog("\t" + "download status: " + result + "\n");
+                            String result = wizarviewService.queryAppInfoDownloadProgress(appInfos[0].getAppID());
+                            writerInSuccessLog("\t" + "query download progress status: " + result + "\n");
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -197,7 +210,7 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             try {
-                writerInLog("\t" + "onServiceConnected:" + service.getInterfaceDescriptor() + "\n", R.id.log_success);
+                writerInLog("onServiceConnected:" + service.getInterfaceDescriptor() + "\n", R.id.log_success);
                 wizarviewService = IWizarviewService.Stub.asInterface(service);
             } catch (Exception e) {
                 e.printStackTrace();

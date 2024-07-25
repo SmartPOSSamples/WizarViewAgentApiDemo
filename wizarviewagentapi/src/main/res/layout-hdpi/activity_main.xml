@@ -41,6 +41,16 @@
             android:orientation="vertical">
 
             <Button
+                android:id="@+id/btn_run2"
+                android:layout_width="100dp"
+                android:layout_height="60dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/button_selector"
+                android:text="@string/autotest_run2"
+                android:textSize="17sp" />
+
+            <Button
                 android:id="@+id/btn_run3"
                 android:layout_width="100dp"
                 android:layout_height="60dp"

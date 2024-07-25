@@ -7,6 +7,7 @@
     <string name="interval_format_error">The format of interval-time is error!</string>
     <string name="introduction">Introduction Scan</string>
 
+    <string name="autotest_run2">refreshAppInfos</string>
     <string name="autotest_run3">queryAppInfos</string>
     <string name="autotest_run4">downloadAppInfoByAppID</string>
     <string name="autotest_run5">queryAppInfoDownloadProgress</string>
