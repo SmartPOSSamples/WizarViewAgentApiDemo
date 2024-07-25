@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
         <receiver
-            android:name="com.cloudpos.aidl.tester.receiver.DowloadReceiver"
+            android:name="com.cloudpos.aidl.tester.receiver.DownloadReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

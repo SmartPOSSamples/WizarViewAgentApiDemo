@@ -150,12 +150,16 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
             }
         } else if (index == R.id.btn_run4) {
             try {
+                builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Please choose an app to download:");
                 getAppInfosDialog(index);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
         } else if (index == R.id.btn_run5) {
             try {
+                builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("Please choose an app to view its download progress:");
                 getAppInfosDialog(index);
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
@@ -166,8 +170,6 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
     }
 
     public void getAppInfosDialog(final int type) throws RemoteException {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Select an Option");
         int status = wizarviewService.refreshAppList();
         writerInSuccessLog("\t refresh AppList status: " + status + "\n");
         AppInfo[] appInfos = wizarviewService.queryAppInfos(AppInfo.INSTALL_TYPE_ALL, AppInfo.STATUS_ALL, AppInfo.CONTENT_TYPE_ALL);
@@ -186,10 +188,10 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
                             return;
                         }
                         if (type == R.id.btn_run4) {
-                            int code = wizarviewService.downloadAppInfoByAppID(appInfos[0].getAppID());
+                            int code = wizarviewService.downloadAppInfoByAppID(appInfos[which].getAppID());
                             writerInSuccessLog("\t" + "download result: " + code + "\n");
                         } else if (type == R.id.btn_run5) {
-                            String result = wizarviewService.queryAppInfoDownloadProgress(appInfos[0].getAppID());
+                            String result = wizarviewService.queryAppInfoDownloadProgress(appInfos[which].getAppID());
                             writerInSuccessLog("\t" + "query download progress status: " + result + "\n");
                         }
                     } catch (Exception e) {
@@ -239,7 +241,7 @@ public class MainActivity extends AbstractActivity implements OnClickListener {
 
         }
     };
-
+    AlertDialog.Builder builder;
     IWizarviewService wizarviewService;
     ICloudPosTmsApiService cloudPosTmsApiService;
 }
